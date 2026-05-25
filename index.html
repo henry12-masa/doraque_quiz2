@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドラクエ呪文クイズ2</title>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8398161859137802"
+ crossorigin="anonymous"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Hiragino Sans","Yu Gothic",sans-serif;background:linear-gradient(135deg,#020617,#581c87,#111827);color:#fff;min-height:100vh}
+header{text-align:center;padding:28px 16px}
+h1{margin:0;font-size:30px}
+p{color:#ddd}
+.container{max-width:760px;margin:auto;padding:16px}
+.card{background:rgba(15,23,42,.94);border:2px solid #c084fc;border-radius:22px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.status{display:flex;justify-content:space-between;margin-bottom:18px;color:#e9d5ff;font-weight:bold}
+.question{font-size:23px;line-height:1.6;margin:20px 0}
+.spell{font-size:38px;text-align:center;padding:18px;margin:18px 0;border-radius:18px;background:linear-gradient(135deg,#9333ea,#2563eb);font-weight:bold;letter-spacing:.08em}
+.choices{display:grid;gap:12px}
+button{border:none;border-radius:14px;padding:15px;font-size:17px;font-weight:bold;cursor:pointer;transition:.2s}
+.choice{background:#f8fafc;color:#111827}
+.choice:hover{transform:translateY(-2px);background:#ede9fe}
+.correct{background:#22c55e!important;color:white!important}
+.wrong{background:#ef4444!important;color:white!important}
+.result{text-align:center;font-size:22px;margin-top:20px;line-height:1.7}
+.restart{background:#facc15;color:#111827;width:100%;margin-top:16px}
+.ad-box{margin:22px 0;padding:10px;background:#fff;border-radius:14px}
+.small{text-align:center;color:#cbd5e1;font-size:13px;margin-top:14px}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🪄 ドラクエ呪文クイズ2</h1>
+  <p>前回とは別の呪文問題に挑戦！</p>
+</header>
+
+<div class="container">
+
+  <div class="ad-box">
+    <!-- UIゲーム -->
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-8398161859137802"
+      data-ad-slot="6325875393"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <div class="card">
+    <div class="status">
+      <div id="count">1 / 10</div>
+      <div id="score">スコア：0</div>
+    </div>
+
+    <div class="question">この呪文の効果は？</div>
+    <div class="spell" id="spell">---</div>
+    <div class="choices" id="choices"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="small">※非公式ファン向けクイズです。</div>
+</div>
+
+<script>
+const questions = [
+  {
+    spell:"メラミ",
+    answer:"メラより強い火球で敵一体を攻撃する",
+    choices:["メラより強い火球で敵一体を攻撃する","敵全体を眠らせる","仲間全員を回復する","守備力を大きく上げる"]
+  },
+  {
+    spell:"メラゾーマ",
+    answer:"巨大な火球で敵一体に大ダメージを与える",
+    choices:["巨大な火球で敵一体に大ダメージを与える","敵のMPを吸収する","味方全員を復活させる","炎を完全に防ぐ"]
+  },
+  {
+    spell:"ベギラゴン",
+    answer:"激しい炎で敵グループを攻撃する",
+    choices:["激しい炎で敵グループを攻撃する","氷で敵一体を攻撃する","味方の攻撃力を下げる","毒を治す"]
+  },
+  {
+    spell:"イオラ",
+    answer:"大きな爆発で敵全体を攻撃する",
+    choices:["大きな爆発で敵全体を攻撃する","雷で敵一体を攻撃する","洞窟から脱出する","味方を眠りから覚ます"]
+  },
+  {
+    spell:"イオナズン",
+    answer:"すさまじい爆発で敵全体に大ダメージを与える",
+    choices:["すさまじい爆発で敵全体に大ダメージを与える","敵を混乱させる","HPを少し回復する","敵の守備力を上げる"]
+  },
+  {
+    spell:"バギマ",
+    answer:"強い真空の刃で敵グループを攻撃する",
+    choices:["強い真空の刃で敵グループを攻撃する","味方の素早さを下げる","敵を即死させる","仲間を復活させる"]
+  },
+  {
+    spell:"バギクロス",
+    answer:"巨大な竜巻で敵グループを攻撃する",
+    choices:["巨大な竜巻で敵グループを攻撃する","氷の壁で守る","毒を与える","町へ移動する"]
+  },
+  {
+    spell:"ベホマ",
+    answer:"仲間一人のHPを大きく回復する",
+    choices:["仲間一人のHPを大きく回復する","仲間全員を復活させる","敵の呪文を封じる","攻撃力を下げる"]
+  },
+  {
+    spell:"ベホマラー",
+    answer:"仲間全員のHPを回復する",
+    choices:["仲間全員のHPを回復する","仲間一人を完全回復する","敵全体を眠らせる","敵の守備力を下げる"]
+  },
+  {
+    spell:"ベホマズン",
+    answer:"仲間全員のHPを大きく回復する",
+    choices:["仲間全員のHPを大きく回復する","敵全体を即死させる","味方のMPを回復する","炎で敵全体を攻撃する"]
+  },
+  {
+    spell:"ザオリク",
+    answer:"仲間一人を確実に復活させる",
+    choices:["仲間一人を確実に復活させる","敵一体を眠らせる","毒を完全に防ぐ","敵の素早さを下げる"]
+  },
+  {
+    spell:"ザラキ",
+    answer:"敵グループを即死させることがある",
+    choices:["敵グループを即死させることがある","仲間全員を復活させる","敵の攻撃力を上げる","HPを少し回復する"]
+  },
+  {
+    spell:"マホカンタ",
+    answer:"呪文を跳ね返すバリアを張る",
+    choices:["呪文を跳ね返すバリアを張る","敵のMPを吸収する","味方を透明にする","敵を眠らせる"]
+  },
+  {
+    spell:"マホトラ",
+    answer:"敵からMPを吸い取る",
+    choices:["敵からMPを吸い取る","敵の呪文を封じる","味方のMPを消費する","雷で攻撃する"]
+  },
+  {
+    spell:"フバーハ",
+    answer:"炎や吹雪のダメージを軽減する",
+    choices:["炎や吹雪のダメージを軽減する","敵の守備力を下げる","毒を治す","仲間を復活させる"]
+  },
+  {
+    spell:"ピオリム",
+    answer:"味方全員の素早さを上げる",
+    choices:["味方全員の素早さを上げる","敵全体の素早さを上げる","味方一人を眠らせる","敵のMPを吸う"]
+  },
+  {
+    spell:"ボミオス",
+    answer:"敵グループの素早さを下げる",
+    choices:["敵グループの素早さを下げる","味方全員の素早さを上げる","炎で攻撃する","HPを回復する"]
+  },
+  {
+    spell:"マヌーサ",
+    answer:"敵を幻に包み攻撃を当たりにくくする",
+    choices:["敵を幻に包み攻撃を当たりにくくする","敵を即死させる","味方の命中率を上げる","町へ戻る"]
+  },
+  {
+    spell:"ニフラム",
+    answer:"弱い敵を光で消し去る",
+    choices:["弱い敵を光で消し去る","敵を眠らせる","仲間を全回復する","洞窟から脱出する"]
+  },
+  {
+    spell:"トラマナ",
+    answer:"毒の沼地やバリア床のダメージを防ぐ",
+    choices:["毒の沼地やバリア床のダメージを防ぐ","敵の炎を防ぐ","町へ移動する","宝箱を開ける"]
+  }
+];
+
+let quiz = [];
+let current = 0;
+let score = 0;
+const total = 10;
+
+function shuffle(arr){
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+function startQuiz(){
+  quiz = shuffle([...questions]).slice(0,total);
+  current = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion(){
+  const q = quiz[current];
+
+  document.getElementById("count").textContent = `${current + 1} / ${total}`;
+  document.getElementById("score").textContent = `スコア：${score}`;
+  document.getElementById("spell").textContent = q.spell;
+  document.getElementById("result").textContent = "";
+
+  const box = document.getElementById("choices");
+  box.innerHTML = "";
+
+  shuffle([...q.choices]).forEach(text => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.textContent = text;
+    btn.onclick = () => checkAnswer(btn,text,q.answer);
+    box.appendChild(btn);
+  });
+}
+
+function checkAnswer(btn,choice,answer){
+  const buttons = document.querySelectorAll(".choice");
+  buttons.forEach(b => b.disabled = true);
+
+  if(choice === answer){
+    btn.classList.add("correct");
+    score++;
+    document.getElementById("result").textContent = "正解！";
+  }else{
+    btn.classList.add("wrong");
+    buttons.forEach(b => {
+      if(b.textContent === answer){
+        b.classList.add("correct");
+      }
+    });
+    document.getElementById("result").textContent = `不正解… 正解は「${answer}」`;
+  }
+
+  setTimeout(() => {
+    current++;
+    if(current < total){
+      showQuestion();
+    }else{
+      showResult();
+    }
+  }, 1000);
+}
+
+function showResult(){
+  let comment = "";
+
+  if(score === total){
+    comment = "完全制覇！大魔導士レベルです。";
+  }else if(score >= 8){
+    comment = "かなり強い！上級冒険者レベルです。";
+  }else if(score >= 5){
+    comment = "中級冒険者レベル。まだ伸びます！";
+  }else{
+    comment = "呪文書を読み直そう！再挑戦です。";
+  }
+
+  document.querySelector(".card").innerHTML = `
+    <div class="result">
+      <h2>結果発表</h2>
+      <p>${total}問中 ${score}問正解！</p>
+      <p>${comment}</p>
+      <button class="restart" onclick="location.reload()">もう一度遊ぶ</button>
+    </div>
+  `;
+}
+
+startQuiz();
+</script>
+
+</body>
+</html>
